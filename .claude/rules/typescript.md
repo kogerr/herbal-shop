@@ -1,0 +1,28 @@
+---
+paths:
+  - "packages/**/*.ts"
+  - "packages/**/*.tsx"
+---
+
+- Never use `any`; use `unknown` for truly unknown types or define proper types
+- Use `import type` for type-only imports
+- Prefer `Type[]` over `Array<Type>`
+- Avoid type casts (`as Type`); use type narrowing, generics, or conditional checks
+- Required parameters first, optional parameters last in function signatures
+- Type names must be PascalCase
+- No single-letter variable names, including in `.map()`, `.filter()`, and callbacks
+- Avoid generic names like `data`, `result`, `value`; use specific descriptive names
+- Functions and methods use `verbNoun` naming: `getProducts` not `productData`
+- Constants use `ALL_CAPS_SNAKE_CASE` or `camelCase`, never PascalCase for non-components
+- No variable shadowing; inner scope variables must have different names from outer scope
+- Use `.includes()`, `.some()`, `.find()` over manual loops
+- Use optional chaining and nullish coalescing
+- Extract magic numbers into named constants
+- Always use braces in `if`/`else` blocks, even for single-line bodies
+- No unnecessary `async/await`; do not mark functions `async` when there is no `await`
+- Prefer positive conditions in ternaries
+- Prefer `if`/`else` statements over nested ternary operators
+- Use path aliases instead of deep relative paths
+- Remove all unused imports, variables, functions, and commented-out code
+- Do not add JSDoc comments; the code should be self-documenting
+- Do not create `index.tsx` barrel/re-export files; import directly from source files

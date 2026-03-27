@@ -1,0 +1,23 @@
+---
+paths:
+  - "packages/frontend/src/**/*.tsx"
+  - "packages/frontend/src/**/*.ts"
+---
+
+- Always use arrow functions for components, handlers, and helper functions
+- Destructure props in the function signature, not inside the body
+- Use `type Props = { ... }` for component prop definitions, not `interface`
+- Return `null`, not `undefined`, when rendering nothing
+- Only use `useCallback`/`useMemo` when justified (passed to memoized child or genuinely expensive)
+- Use early returns to reduce nesting, especially after hooks
+- Separate `useState` for each state variable, never combine into an object
+- Define types, constants, and helpers outside component bodies
+- Do not create trivial wrapper components; inline them
+- Use `sx` callback instead of `useTheme` for single-use theme access
+- Prefer MUI components over raw HTML elements (`Button` over `<button>`, `List` over `<ul>`)
+- Avoid unnecessary wrapper `<div>`, `<Box>`, or `<span>` elements
+- Use `sx` prop instead of `style` prop
+- Event handler props start with `on`, handler functions start with `handle`
+- Never use class-based components; always use function components with hooks
+- Do not create `index.tsx` barrel/re-export files; import components directly by filename
+- Prefer `if`/`else` statements over nested ternary operators for complex conditions
