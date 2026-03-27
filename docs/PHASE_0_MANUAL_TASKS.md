@@ -295,12 +295,12 @@ Not a registration, but critical for launch. Bad product photos kill conversions
 
 | # | Task | Priority | Time | Wait time | Status |
 |---|---|---|---|---|---|
-| 1 | GitHub private repo | Critical | 15 min | None | ☐ |
-| 2 | Domain registration | Critical | 30 min | 1-48h DNS | ☐ |
-| 3 | Barion registration + sandbox | Critical | 30 min | **3-7 days approval** | ☐ |
-| 4 | Szamlazz.hu account + API | Critical | 45 min | None | ☐ |
-| 5 | Neon/Supabase database | Critical | 15 min | None | ☐ |
-| 6 | Vercel + Railway hosting | Critical | 1 hour | None | ☐ |
+| 1 | GitHub private repo | Critical | 15 min | None | ✅ Done — github.com/kogerr/herbal-shop |
+| 2 | Domain (temporary) | Critical | 30 min | 1-48h DNS | ✅ Done — using shop.koger.io / shop-api.koger.io for dev. Register dedicated .hu domain before launch. |
+| 3 | Barion (temporary sandbox) | Critical | 30 min | **3-7 days approval** | ✅ Done — sandbox keys from existing account. Apply for live approval with final business details before launch. |
+| 4 | Szamlazz.hu (temporary) | Critical | 45 min | None | ✅ Done — agent key from existing account. Verify VAT mode (AAM vs 27%) and invoice settings before launch. |
+| 5 | Neon database | Critical | 15 min | None | ✅ Done — Neon eu-central-1 (Frankfurt) |
+| 6 | Vercel + Railway hosting | Critical | 1 hour | None | ✅ Done — frontend on Vercel, backend on Railway |
 | 7 | Cloudinary images | Phase 2 | 15 min | None | ☐ |
 | 8 | Resend email service | Phase 3 | 20 min | None | ☐ |
 | 9 | Sentry + UptimeRobot | Phase 5 | 20 min | None | ☐ |
