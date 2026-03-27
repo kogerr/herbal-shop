@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
-import { db } from "../db/index";
-import { categories, products } from "../db/schema";
+import { db } from "../db/index.js";
+import { categories, products } from "../db/schema.js";
 
 export const productRoutes = async (app: FastifyInstance) => {
   app.get("/products", async (request) => {

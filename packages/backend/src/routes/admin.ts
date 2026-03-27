@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
-import { db } from "../db/index";
-import { products } from "../db/schema";
-import { adminAuth } from "../middleware/adminAuth";
+import { db } from "../db/index.js";
+import { products } from "../db/schema.js";
+import { adminAuth } from "../middleware/adminAuth.js";
 
 export const adminRoutes = async (app: FastifyInstance) => {
   app.addHook("onRequest", adminAuth);

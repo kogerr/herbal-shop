@@ -2,10 +2,10 @@ import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import rateLimit from "@fastify/rate-limit";
 import fastify from "fastify";
-import { config } from "./config";
-import { adminRoutes } from "./routes/admin";
-import { orderRoutes } from "./routes/orders";
-import { productRoutes } from "./routes/products";
+import { config } from "./config.js";
+import { adminRoutes } from "./routes/admin.js";
+import { orderRoutes } from "./routes/orders.js";
+import { productRoutes } from "./routes/products.js";
 
 const buildApp = async () => {
   const app = fastify({

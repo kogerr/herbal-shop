@@ -1,5 +1,5 @@
-import { db } from "./index";
-import { categories, products } from "./schema";
+import { db } from "./index.js";
+import { categories, products } from "./schema.js";
 
 const seedCategories = [
   {

@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { config } from "../config";
+import { config } from "../config.js";
 
 export const adminAuth = async (request: FastifyRequest, reply: FastifyReply) => {
   const authHeader = request.headers.authorization;
