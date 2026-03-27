@@ -281,6 +281,7 @@ Scheduled job (node-cron, every 10 min): find orders older than 30 min still `pe
 - Order confirmation page + email
 - Mobile-responsive design
 - Minimal admin API for product CRUD
+- Admin dashboard UI (product management, order overview, mark shipped)
 - Shipping cost display (flat rate tiers)
 - Cookie consent banner (GDPR)
 - Legal pages: ÁSZF, Privacy Policy, Impresszum
@@ -292,7 +293,6 @@ Scheduled job (node-cron, every 10 min): find orders older than 30 min still `pe
 - Product reviews, discount codes / coupons
 - Advanced search / filtering
 - Blog / content pages, multi-language
-- Admin dashboard UI
 - Multiple payment providers
 - Analytics dashboard, subscription orders
 

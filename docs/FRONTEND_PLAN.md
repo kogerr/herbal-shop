@@ -99,6 +99,33 @@
 ### 404 (`*`)
 - Centered icon, "Az oldal nem található", link home
 
+### Admin — Login (`/admin/login`)
+- Simple API key login form (stored in sessionStorage)
+- Redirects to `/admin` on success
+
+### Admin — Dashboard (`/admin`)
+- Overview: recent orders count, pending/shipped stats
+- Quick links to products and orders management
+
+### Admin — Products (`/admin/termekek`)
+- Table of all products (active + inactive) with name, price, stock, status
+- Add new / edit / deactivate buttons
+- Inline stock editing
+
+### Admin — Product Form (`/admin/termekek/uj`, `/admin/termekek/:id/szerkesztes`)
+- Form: name, slug, description, ingredients, price, stock, weight, category, images, active toggle
+- Validation using shared Zod schemas
+
+### Admin — Orders (`/admin/megrendelesek`)
+- Table of orders with order number, customer name, date, status, total
+- Filter by status (pending, paid, shipped, delivered, cancelled)
+- Click to view order detail
+
+### Admin — Order Detail (`/admin/megrendelesek/:id`)
+- Full order info: customer data, shipping address, line items, totals
+- Status badge + "Mark as shipped" action button
+- Invoice download link
+
 ---
 
 ## Components
@@ -125,6 +152,14 @@
 - `ShippingMethodSelector` — RadioGroup
 - `OrderSummaryCompact` — condensed cart for sidebar
 
+### Admin
+- `AdminLayout` — sidebar nav (Drawer) + header with logout. Wraps admin routes.
+- `AdminProductTable` — DataGrid/Table of products with inline actions
+- `AdminProductForm` — create/edit product form with all fields
+- `AdminOrderTable` — DataGrid/Table of orders with status filters
+- `AdminOrderDetail` — full order view with status actions
+- `AdminLoginForm` — API key input
+
 ### Shared
 - `PageContainer` — Container maxWidth="lg" with consistent padding
 - `SectionHeading` — styled Typography for section titles
@@ -143,10 +178,17 @@
 /kosar                         → Cart
 /penztar                       → Checkout
 /rendeles-visszaigazolas/:id   → OrderConfirmation
+/admin/login                   → AdminLogin
+/admin                         → AdminDashboard
+/admin/termekek                → AdminProductList
+/admin/termekek/uj             → AdminProductForm (create)
+/admin/termekek/:id/szerkesztes → AdminProductForm (edit)
+/admin/megrendelesek           → AdminOrderList
+/admin/megrendelesek/:id       → AdminOrderDetail
 *                              → NotFound
 ```
 
-React Router v7 with `createBrowserRouter`. No protected routes. Soft guard: redirect `/penztar` → `/kosar` if cart empty.
+React Router v7 with `createBrowserRouter`. Admin routes protected: redirect to `/admin/login` if no API key in sessionStorage. Soft guard: redirect `/penztar` → `/kosar` if cart empty.
 
 ---
 
