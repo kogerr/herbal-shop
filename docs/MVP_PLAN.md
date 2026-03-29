@@ -306,7 +306,7 @@ Scheduled job (node-cron, every 10 min): find orders older than 30 min still `pe
 | **1** | Project Skeleton | 3-4 days | Monorepo initialized, frontend + backend running, Postgres + Drizzle schema, basic routing, `.env` config, CI pipeline |
 | **2** | Core Features | 5-7 days | Product listing + detail pages, shopping cart (Zustand + localStorage), checkout form with validation, admin product CRUD API |
 | **3** | Integrations | 5-7 days | Barion payment flow (start → redirect → callback → verify), Szamlazz.hu invoice generation, order status state machine, confirmation email via Resend |
-| **4** | Polish | 3-4 days | MUI theming (herbal palette), responsive fixes, error handling + loading states, form validation UX, cookie consent, SEO meta tags, legal pages |
+| **4** | Polish | 3-4 days | MUI theming (herbal palette), responsive fixes, error handling + loading states, form validation UX, cookie consent, SEO meta tags, legal pages, Cloudinary image upload in admin product form |
 | **5** | Launch Prep | 3-4 days | Production deployment, domain + SSL, monitoring (Sentry + UptimeRobot), GDPR privacy policy, security review, full end-to-end smoke test |
 
 **Total: ~21-29 working days (~4-6 weeks solo)**
