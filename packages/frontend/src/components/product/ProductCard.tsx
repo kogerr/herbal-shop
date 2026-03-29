@@ -24,7 +24,7 @@ export const ProductCard = ({ product }: Props) => {
   return (
     <Card
       data-test-id="productCard"
-      sx={{ cursor: "pointer", display: "flex", flexDirection: "column", height: "100%" }}
+            sx={{ cursor: "pointer", display: "flex", flexDirection: "column", height: "100%" }}
       onClick={handleClick}
     >
       <Box sx={{ bgcolor: "grey.200", height: 200, width: "100%" }} />
@@ -39,7 +39,7 @@ export const ProductCard = ({ product }: Props) => {
             fullWidth
             onClick={handleAddToCart}
             data-test-id="addToCartButton"
-          >
+                      >
             Kosárba
           </Button>
         </Box>

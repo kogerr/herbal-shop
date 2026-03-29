@@ -21,13 +21,11 @@ type Props = {
 };
 
 export const CartDrawer = ({ onClose, open }: Props) => {
-  const { items, removeItem, subtotal, totalItems, updateQuantity } = useCartStore((state) => ({
-    items: state.items,
-    removeItem: state.removeItem,
-    subtotal: state.subtotal,
-    totalItems: state.totalItems,
-    updateQuantity: state.updateQuantity,
-  }));
+  const items = useCartStore((state) => state.items);
+  const removeItem = useCartStore((state) => state.removeItem);
+  const subtotal = useCartStore((state) => state.subtotal);
+  const totalItems = useCartStore((state) => state.totalItems);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
 
   return (
     <Drawer anchor="right" onClose={onClose} open={open}>
