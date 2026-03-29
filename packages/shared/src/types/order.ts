@@ -37,3 +37,27 @@ export type ShippingInfo = {
   name: string;
   zip: string;
 };
+
+export type OrderDetailItem = {
+  id: string;
+  lineTotalHuf: number;
+  productName: string;
+  productPriceHuf: number;
+  quantity: number;
+};
+
+export type OrderDetail = {
+  createdAt: string;
+  id: string;
+  items: OrderDetailItem[];
+  orderNumber: string;
+  shippingAddress: string;
+  shippingCity: string;
+  shippingCostHuf: number;
+  shippingName: string;
+  shippingZip: string;
+  status: OrderStatus;
+  subtotalHuf: number;
+  totalHuf: number;
+  updatedAt: string;
+};

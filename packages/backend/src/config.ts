@@ -6,7 +6,7 @@ const envSchema = z.object({
   BARION_HOST: z.string().default("api.test.barion.com"),
   BARION_PAYEE: z.string().email().default("test@test.com"),
   BARION_POS_KEY: z.string().default("test-pos-key"),
-  DATABASE_URL: z.string().default("postgresql://localhost:5432/webshop"),
+  DATABASE_URL: z.string(),
   FRONTEND_URL: z.string().default("http://localhost:5173"),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   PORT: z.coerce.number().default(3000),

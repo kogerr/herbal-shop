@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
 import { db } from "../db/index.js";
 import { categories, products } from "../db/schema.js";
@@ -15,42 +15,32 @@ export const productRoutes = async (app: FastifyInstance) => {
     const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 20));
     const offset = (pageNum - 1) * limitNum;
 
-    let query = db
-      .select()
-      .from(products)
-      .where(eq(products.isActive, true))
-      .limit(limitNum)
-      .offset(offset);
+    let whereCondition = eq(products.isActive, true);
 
     if (category) {
-      const cat = await db
+      const [cat] = await db
         .select()
         .from(categories)
         .where(eq(categories.slug, category))
         .limit(1);
 
-      if (cat[0]) {
-        query = db
-          .select()
-          .from(products)
-          .where(and(eq(products.isActive, true), eq(products.categoryId, cat[0].id)))
-          .limit(limitNum)
-          .offset(offset);
+      if (cat) {
+        whereCondition = and(eq(products.isActive, true), eq(products.categoryId, cat.id))!;
       }
     }
 
-    const result = await query;
+    const [productRows, [countRow]] = await Promise.all([
+      db.select().from(products).where(whereCondition).limit(limitNum).offset(offset),
+      db.select({ total: sql<number>`count(*)::int` }).from(products).where(whereCondition),
+    ]);
 
-    const countResult = await db
-      .select()
-      .from(products)
-      .where(eq(products.isActive, true));
+    const total = countRow?.total ?? 0;
 
     return {
       page: pageNum,
-      products: result,
-      total: countResult.length,
-      totalPages: Math.ceil(countResult.length / limitNum),
+      products: productRows,
+      total,
+      totalPages: Math.ceil(total / limitNum),
     };
   });
 

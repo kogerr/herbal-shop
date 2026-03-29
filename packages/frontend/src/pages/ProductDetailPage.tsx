@@ -10,7 +10,7 @@ import { useCartStore } from "../stores/cartStore";
 
 export const ProductDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { data: product, isLoading } = useProduct(slug!);
+  const { data: product, isLoading } = useProduct(slug ?? "");
   const addItem = useCartStore((state) => state.addItem);
   const [quantity, setQuantity] = useState(1);
 
@@ -18,7 +18,7 @@ export const ProductDetailPage = () => {
     return <LoadingSpinner />;
   }
 
-  if (!product) {
+  if (!slug || !product) {
     return (
       <PageContainer>
         <Typography>A termék nem található.</Typography>

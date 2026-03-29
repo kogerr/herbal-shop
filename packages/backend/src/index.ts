@@ -4,6 +4,7 @@ import rateLimit from "@fastify/rate-limit";
 import fastify from "fastify";
 import { config } from "./config.js";
 import { adminRoutes } from "./routes/admin.js";
+import { categoryRoutes } from "./routes/categories.js";
 import { orderRoutes } from "./routes/orders.js";
 import { productRoutes } from "./routes/products.js";
 
@@ -22,6 +23,7 @@ const buildApp = async () => {
 
   app.get("/api/health", async () => ({ status: "ok" }));
 
+  await app.register(categoryRoutes, { prefix: "/api" });
   await app.register(productRoutes, { prefix: "/api" });
   await app.register(orderRoutes, { prefix: "/api" });
   await app.register(adminRoutes, { prefix: "/api/admin" });
