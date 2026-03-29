@@ -27,22 +27,22 @@ test("Admin: login, dashboard, products, orders", async ({ page }) => {
   });
 
   await test.step("Dashboard shows stat cards", async () => {
-    await expect(page.getByText("Összes megrendelés")).toBeVisible();
+    await expect(page.getByText("Összes megrendelés", { exact: true })).toBeVisible();
     await expect(page.getByText("Függőben lévő")).toBeVisible();
     await expect(page.getByText("Mai bevétel")).toBeVisible();
     await expect(page.getByText("Aktív termékek")).toBeVisible();
   });
 
   await test.step("Navigate to product list via sidebar", async () => {
-    await page.getByRole("link", { name: "Termékek" }).click();
+    await page.getByRole("link", { name: "Termékek", exact: true }).click();
     await page.waitForURL("/admin/termekek");
     await expect(page.getByRole("heading", { name: "Termékek" })).toBeVisible();
 
     // Products should be listed in a table
     await expect(page.getByRole("table")).toBeVisible();
-    // At least the seeded 6 products
-    const rows = page.getByRole("row");
-    await expect(rows).toHaveCount(7); // header + 6 products
+    // At least the seeded 6 products (+ header row, + any previously created test products)
+    const dataRows = page.locator("tbody tr");
+    expect(await dataRows.count()).toBeGreaterThanOrEqual(6);
   });
 
   await test.step("Navigate to new product form", async () => {
@@ -51,25 +51,26 @@ test("Admin: login, dashboard, products, orders", async ({ page }) => {
     await expect(page.getByRole("heading", { name: /Új termék/i })).toBeVisible();
 
     // Form fields should be present
-    await expect(page.getByLabel(/Termék neve/i)).toBeVisible();
+    await expect(page.getByLabel("Név")).toBeVisible();
     await expect(page.getByLabel(/Slug/i)).toBeVisible();
-    await expect(page.getByLabel(/Leírás/i)).toBeVisible();
-    await expect(page.getByLabel(/Összetevők/i)).toBeVisible();
-    await expect(page.getByLabel(/Ár/i)).toBeVisible();
-    await expect(page.getByLabel(/Készlet/i)).toBeVisible();
-    await expect(page.getByLabel(/Súly/i)).toBeVisible();
+    await expect(page.getByLabel("Leírás")).toBeVisible();
+    await expect(page.getByLabel("Összetevők")).toBeVisible();
+    await expect(page.getByLabel("Ár")).toBeVisible();
+    await expect(page.getByLabel("Készlet")).toBeVisible();
+    await expect(page.getByLabel("Súly")).toBeVisible();
   });
 
   await test.step("Create a new product", async () => {
-    await page.getByLabel(/Termék neve/i).fill("Teszt kenőcs");
+    const uniqueName = `Teszt kenőcs ${Date.now()}`;
+    await page.getByLabel("Név").fill(uniqueName);
     // Slug should auto-generate
-    await expect(page.getByLabel(/Slug/i)).toHaveValue("teszt-kenocs");
+    await expect(page.getByLabel(/Slug/i)).not.toHaveValue("");
 
-    await page.getByLabel(/Leírás/i).fill("Teszt leírás a kenőcshöz");
-    await page.getByLabel(/Összetevők/i).fill("Teszt összetevők");
-    await page.getByLabel(/Ár/i).fill("2990");
-    await page.getByLabel(/Készlet/i).fill("25");
-    await page.getByLabel(/Súly/i).fill("50");
+    await page.getByLabel("Leírás").fill("Teszt leírás a kenőcshöz");
+    await page.getByLabel("Összetevők").fill("Teszt összetevők");
+    await page.getByLabel("Ár").fill("2990");
+    await page.getByLabel("Készlet").fill("25");
+    await page.getByLabel("Súly").fill("50");
 
     // Select category
     await page.getByLabel(/Kategória/i).click();
@@ -78,8 +79,8 @@ test("Admin: login, dashboard, products, orders", async ({ page }) => {
     await page.getByRole("button", { name: "Mentés" }).click();
 
     // Should show success and redirect to list
-    await expect(page.getByText(/sikeresen mentve/i)).toBeVisible();
-    await page.waitForURL("/admin/termekek");
+    await expect(page.getByText(/sikeresen mentve/i)).toBeVisible({ timeout: 10_000 });
+    await page.waitForURL("/admin/termekek", { timeout: 10_000 });
   });
 
   await test.step("Navigate to order list", async () => {

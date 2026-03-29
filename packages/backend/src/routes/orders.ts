@@ -165,7 +165,7 @@ export const orderRoutes = async (app: FastifyInstance) => {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { accessToken, ...orderData } = order;
-    return orderData;
+    const { accessToken, orderItems: items, ...orderData } = order;
+    return { ...orderData, items };
   });
 };

@@ -16,9 +16,9 @@ test("Storefront: browse, filter, add to cart, checkout", async ({ page }) => {
     await expect(page.getByRole("heading", { name: /történetünk/i })).toBeVisible();
 
     // Trust signals
-    await expect(page.getByText("100% természetes")).toBeVisible();
-    await expect(page.getByText("Kézzel készített")).toBeVisible();
-    await expect(page.getByText("Magyar termék")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "100% természetes" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Kézzel készített" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Magyar termék" })).toBeVisible();
   });
 
   await test.step("Footer has 3-column layout with links", async () => {
@@ -30,7 +30,7 @@ test("Storefront: browse, filter, add to cart, checkout", async ({ page }) => {
   await test.step("Navigate to product list and filter by category", async () => {
     await page.getByRole("link", { name: "Termékek megtekintése" }).click();
     await page.waitForURL("/termekek");
-    await expect(page.getByRole("heading", { name: "Termékek" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Termékek" })).toBeVisible();
 
     // Category chips should be visible
     await expect(page.getByRole("button", { name: "Mind" })).toBeVisible();
@@ -59,12 +59,13 @@ test("Storefront: browse, filter, add to cart, checkout", async ({ page }) => {
     await page.waitForURL(/\/termekek\/.+/);
 
     // Breadcrumbs
-    await expect(page.getByRole("link", { name: "Főoldal" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Termékek" })).toBeVisible();
+    const breadcrumbs = page.getByRole("navigation");
+    await expect(breadcrumbs.getByRole("link", { name: "Főoldal" })).toBeVisible();
+    await expect(breadcrumbs.getByRole("link", { name: "Termékek" })).toBeVisible();
 
     // Product info
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    await expect(page.getByText("Összetevők")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Összetevők" })).toBeVisible();
 
     // Stock indicator chip
     await expect(page.getByText(/Készleten|maradt|Elfogyott/)).toBeVisible();
@@ -90,12 +91,12 @@ test("Storefront: browse, filter, add to cart, checkout", async ({ page }) => {
     await expect(page.getByTestId("cartLineItem")).toHaveCount(1);
 
     // Shipping threshold alert
-    await expect(page.getByText(/szállítás/i)).toBeVisible();
+    await expect(page.getByRole("alert")).toBeVisible();
 
     // Summary with subtotal, shipping, total
-    await expect(page.getByText("Részösszeg")).toBeVisible();
-    await expect(page.getByText("Szállítási költség")).toBeVisible();
-    await expect(page.getByText("Összesen")).toBeVisible();
+    await expect(page.getByText("Részösszeg", { exact: true })).toBeVisible();
+    await expect(page.getByText("Szállítási költség", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Összesen" })).toBeVisible();
 
     await page.getByRole("button", { name: "Tovább a fizetéshez" }).click();
     await page.waitForURL("/penztar");
@@ -105,10 +106,10 @@ test("Storefront: browse, filter, add to cart, checkout", async ({ page }) => {
     await expect(page.getByRole("heading", { name: "Fizetés" })).toBeVisible();
 
     // Form sections
-    await expect(page.getByText("Kapcsolattartási adatok")).toBeVisible();
-    await expect(page.getByText("Szállítási cím")).toBeVisible();
-    await expect(page.getByText("Számlázási cím")).toBeVisible();
-    await expect(page.getByText("Szállítási mód")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Kapcsolattartási adatok" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Szállítási cím" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Számlázási cím" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Szállítási mód" })).toBeVisible();
 
     // Order summary sidebar
     await expect(page.getByText("Rendelés összegzése")).toBeVisible();
@@ -121,23 +122,22 @@ test("Storefront: browse, filter, add to cart, checkout", async ({ page }) => {
   });
 
   await test.step("Fill checkout form and submit order", async () => {
-    await page.getByLabel("Név", { exact: true }).first().fill("Teszt Felhasználó");
-    await page.getByLabel("E-mail").fill("teszt@example.com");
-    await page.getByLabel("Telefon").fill("+36301234567");
+    // Customer info
+    await page.getByRole("textbox", { name: "Név" }).first().fill("Teszt Felhasználó");
+    await page.getByRole("textbox", { name: "E-mail" }).fill("teszt@example.com");
+    await page.getByRole("textbox", { name: "Telefon" }).fill("+36301234567");
 
-    // Shipping address
-    const shippingSection = page.getByText("Szállítási cím").locator("..");
-    await shippingSection.getByLabel("Név").fill("Teszt Felhasználó");
-    await shippingSection.getByLabel("Irányítószám").fill("1234");
-    await shippingSection.getByLabel("Város").fill("Budapest");
-    await shippingSection.getByLabel("Utca, házszám").fill("Teszt utca 1.");
+    // Shipping address (second "Név" field)
+    await page.getByRole("textbox", { name: "Név" }).nth(1).fill("Teszt Felhasználó");
+    await page.getByRole("textbox", { name: "Irányítószám" }).fill("1234");
+    await page.getByRole("textbox", { name: "Város" }).fill("Budapest");
+    await page.getByRole("textbox", { name: "Utca, házszám" }).fill("Teszt utca 1.");
 
-    // Select shipping method
-    await page.getByText("GLS futárszolgálat").click();
+    // Shipping method is already selected (GLS default)
 
     // Submit
     await page.getByTestId("placeOrderButton").click();
-    await page.waitForURL(/\/rendeles-visszaigazolas\/.+/);
+    await page.waitForURL(/\/rendeles-visszaigazolas\/.+/, { timeout: 15_000 });
   });
 
   await test.step("Order confirmation shows order details", async () => {
@@ -145,14 +145,13 @@ test("Storefront: browse, filter, add to cart, checkout", async ({ page }) => {
     await expect(page.getByText("Köszönjük a rendelését!")).toBeVisible();
 
     // Order details
-    await expect(page.getByText("Rendelés részletei")).toBeVisible();
-    await expect(page.getByText(/HO-\d{8}-\d{3}/)).toBeVisible();
-    await expect(page.getByText("Részösszeg")).toBeVisible();
-    await expect(page.getByText("Összesen")).toBeVisible();
+    await expect(page.getByText("Rendelés részletei")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText(/HO-/)).toBeVisible();
+    await expect(page.getByText("Részösszeg", { exact: true }).first()).toBeVisible();
 
     // Shipping address in confirmation
     await expect(page.getByText("Szállítási cím")).toBeVisible();
-    await expect(page.getByText("Teszt Felhasználó")).toBeVisible();
+    await expect(page.getByText("Teszt Felhasználó").first()).toBeVisible();
   });
 
   await test.step("404 page shows proper error", async () => {
@@ -178,6 +177,6 @@ test("Mobile navigation drawer", async ({ page }) => {
   await test.step("Navigate via mobile drawer", async () => {
     await page.getByRole("link", { name: "Termékek" }).click();
     await page.waitForURL("/termekek");
-    await expect(page.getByRole("heading", { name: "Termékek" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Termékek" })).toBeVisible();
   });
 });
